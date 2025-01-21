@@ -22,6 +22,7 @@ from cars.views import CarsListView, NewCarCreateView, CarDetailView, CarUpdateV
 from accounts.views import register_view, login_view, logout_view
 
 urlpatterns = [
+    path('', CarsListView.as_view(), name='cars_list'),
     path('admin/', admin.site.urls),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
@@ -31,4 +32,8 @@ urlpatterns = [
     path('car/<int:pk>/', CarDetailView.as_view(), name='car_detail'),
     path('car/<int:pk>/update', CarUpdateView.as_view(), name='car_update'),
     path('car/<int:pk>/delete', CarDeleteView.as_view(), name='car_delete'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
