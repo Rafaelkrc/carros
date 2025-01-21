@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    volumes:
+      - ./data/db:/vr/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=carros
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+
+
+  api:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    volumes:
+    - .:/app
+    - static_volume:/static  # Volume para arquivos estáticos
+    - media_volume:/media        # Monta o diretório 'MEDIA_ROOT'
+    ports:
+    - "8000:8000"
+    depends_on:
+      - postgres
+
+volumes:
+  static_volume:  # Volume para arquivos estáticos
+  media_volume:   # Volume para arquivos de mídia

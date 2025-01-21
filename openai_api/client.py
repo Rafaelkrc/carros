@@ -1,13 +1,14 @@
 from openai import OpenAI
+from decouple import config
 
 
 client = OpenAI(
-    api_key='API_KEY'
+    api_key=config('API_KEY')
 )
 
 
 def get_car_ai_bio(model, brand, year):
-    message = ''''
+    message = '''
     Me mostre uma descrição de venda para o carro {} {} {} em apenas 250 caracteres. Fale coisas específicas desse modelo.
     Descreva especificações técnicas desse modelo de carro.
     '''
